@@ -69,13 +69,16 @@ class Home extends PureComponent
                 </View>
 
                 <>
-                    {
-                        optSel  === 'search'
-                        ?
-                        <SearchView />
-                        :
-                        <FavView />
-                    }
+                    <View style={{flex:1}}>
+                        {
+                            optSel  === 'search'
+                                ?
+                                <SearchView />
+                                :
+                                <FavView />
+                        }
+                    </View>
+
                 </>
 
             </PageHeader>

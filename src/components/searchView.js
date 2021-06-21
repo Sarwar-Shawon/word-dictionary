@@ -9,8 +9,8 @@ import {
     View,
     TouchableOpacity,
     TextInput,
-    Image,
-    FlatList
+    ActivityIndicator,
+    Alert
 
 } from 'react-native';
 
@@ -21,6 +21,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 import {customStyle} from "./common/customStyle";
 import {Owlbot} from '../handler'
+import WordView from './wordView'
 
 /**
  */
@@ -32,7 +33,9 @@ class SearchView extends PureComponent
         this.state = {
 
             search_word: '',
-            find_word: ''
+            find_word: '',
+            bInit: false,
+            fav: false
         }
 
     }
@@ -40,9 +43,11 @@ class SearchView extends PureComponent
      */
     render ()
     {
+        // console.log("this.props", this.props)
+
         return (
 
-            <View>
+            <View style={{flex:1}}>
                 <View style={{flexDirection: 'row', marginVertical: 15, margin: 20}}>
 
                     <View style={{flexDirection: 'row', flex:2,marginRight: 10, height: 35,borderWidth: 1,
@@ -63,33 +68,52 @@ class SearchView extends PureComponent
                     </View>
 
 
-                    <View style={{flex:1, height: 35,borderWidth: 1, borderColor: "#000", justifyContent: 'center', alignItems: 'center'}}>
-                        <TouchableOpacity
-                                          onPress={()=>this.onSearch()}
-                        >
+                    <TouchableOpacity
+                        onPress={()=>this.OnSearch()}
+                        style={{flex:1}}
+                    >
+                        <View style={{height: 35,borderWidth: 1, borderColor: "#000", justifyContent: 'center', alignItems: 'center'}}>
+
                             <Text style={{color:'#000'}}>
                                 Search
                             </Text>
+                        </View>
 
-                        </TouchableOpacity>
-                    </View>
+                    </TouchableOpacity>
 
                 </View>
+                {
+                    this.state.bInit &&
+                    <View style={{flex:1 , justifyContent: 'center', alignItems: 'center'}}>
+                        <ActivityIndicator size="large"
+                                           color="#843272"
+                        />
+                    </View>
+                }
+
 
                 {
                     this.state.find_word === 'No words found'
                     ?
-                    <View>
-                        <Text>
-                            No words found
+                    <View style={[customStyle.boxView,{justifyContent: 'center', alignItems: 'center', marginTop: 40}]}>
+
+                        <MaterialCommunityIcons name="emoticon-sad-outline"  size={100} color={'#2d0648'}/>
+
+                        <Text style={{fontSize: 20, fontWeight: "bold"}}>
+                            Oops! No words found.
                         </Text>
                     </View>
                     :
                     this.state.find_word
                     ?
-                    <WordView
-                        word={this.state.find_word}
-                    />
+                    <View style={{flex:1}}>
+                        <WordView
+                            word={this.state.find_word}
+                            fav={this.state.fav}
+                            SetFav={(val)=>this.setState({fav: val})}
+                        />
+                    </View>
+
                     :
                     null
                 }
@@ -100,19 +124,39 @@ class SearchView extends PureComponent
 
     /**
      */
-    onSearch = async ()=>
+    OnSearch = async ()=>
     {
         try
         {
+            if(!this.state.search_word)
+            {
+                Alert.alert(
+                    'Alert!!!',
+                    'Please enter a word to search.',
+                    [
+                        {
+                            text: 'OK', onPress: () => {}
+                        },
+                    ],
+                    {cancelable: false}
+                );
+                return {}
+            }
             const owl_bot = new Owlbot({})
 
-            console.log("this.state.search_word",this.state.search_word)
+            this.setState({bInit: true,find_word: '',fav: false})
+
+            if(this.props.__dictionary.favList)
+            {
+                this.CheckFav()
+                    .catch()
+            }
 
             const search_data = await owl_bot.GetWords({text: this.state.search_word})
 
             console.log("search_data", search_data)
 
-            this.setState({find_word: search_data})
+            this.setState({find_word: search_data, bInit: false})
         }
         catch (err)
         {
@@ -120,83 +164,26 @@ class SearchView extends PureComponent
             return {err}
         }
     }
-}   // SearchView
-
-/**
- */
-class WordView extends PureComponent
-{
-    constructor( props )
+    /**
+     */
+    CheckFav = async ()=>
     {
-        super( props )
-        this.state = {
+        try
+        {
+            const findWord = this.props.__dictionary.favList.find(x=>x.word.toLowerCase() === this.state.search_word.toLowerCase())
 
+            this.setState({fav: findWord ? true: false})
+
+            // console.log("findWord",findWord)
         }
+        catch (err)
+        {
 
+            return {err}
+        }
     }
-    /**
-     */
-    render ()
-    {
-        const {word} = this.props
-        return (
 
-            <View style={{margin: 20}}>
-                <Text>Search Word: {word.word}</Text>
-
-                <FlatList
-                    data={word.definitions}
-                    renderItem={this.RenderDef}
-                    keyExtractor={ ( item,index ) => index.toString() }
-                    ItemSeparatorComponent={this.FlatListItemSeparator}
-                />
-
-            </View>
-
-        )
-    }
-    /**
-     */
-    RenderDef = ({ item }) => {
-        return (
-            <View style={{padding: 20, margin: 10}}>
-                {
-                    item.image_url &&
-                    <Image
-                        style={{
-                            width: 100,
-                            height: 100,
-                            resizeMode: "contain",
-                            marginLeft: "auto",
-                            marginRight: "auto",
-                            borderRadius:50
-                        }}
-                        source={{uri: item.image_url}}
-                    />
-                }
-                <Text>Type: {item.type}</Text>
-
-                <Text>Definition: {item.definition}</Text>
-
-                <Text>Example: {item.example}</Text>
-
-            </View>
-        );
-    };
-    /**
-     */
-    FlatListItemSeparator = () => {
-        return (
-            <View
-                style={{
-                    height: 1,
-                    width: "100%",
-                    backgroundColor: "#000",
-                }}
-            />
-        );
-    }
-}   // WordView
+}   // SearchView
 
 /**
  */

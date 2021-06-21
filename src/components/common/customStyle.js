@@ -36,5 +36,17 @@ export const customStyle = StyleSheet.create({
 
         borderWidth: 1,
         borderColor: "#000"
+    },
+    boxView: {
+        borderRadius:8,
+        padding:15,
+        marginHorizontal:20,
+        marginBottom:5,
+        backgroundColor:"#fff",
+        borderWidth: 0.5,
+        borderColor: '#ddd',
+        shadowOffset:{  width: 1,  height: 1,  },
+        shadowColor: '#ddd',
+        shadowOpacity: 0.5
     }
 })
