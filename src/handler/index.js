@@ -2,11 +2,11 @@
  * @copyright Md. Sarwar Hoshen
  */
 
-export default class Auth
+class Owlbot
 {
     constructor(p)
     {
-        this.api_url = p.api_url ? p.api_url: "";
+        this.api_url = p.api_url ? p.api_url: "https://owlbot.info/api/v4/dictionary";
     }
 
     /**
@@ -17,28 +17,32 @@ export default class Auth
         {
 
             const requestOptions = {
-                method: 'POST',
+                method: 'GET',
                 headers: {
-                    "Authorization": '18f5e7bb3f21740ab5d39851dfdb36a14b868a4d',
+                    "Authorization": 'Token 18f5e7bb3f21740ab5d39851dfdb36a14b868a4d',
                     "Content-Type" :'application/json'
-                },
-                body: {},
+                }
             };
 
-            const response = await fetch(this.api_url , requestOptions)
+            const resp = await fetch( [this.api_url, p.text].join('/') , requestOptions)
 
-            let json = await response.json()
+            console.log("handler/GetWord/resp:", resp)
 
-            console.log("handler/GetWord/result:", json)
+            let resp_json = resp.ok ? await resp.json() : 'No words found'
 
-            return {resp:{...json},msg:"ok"}
+            // console.log("handler/GetWord/result:", resp_json)
+
+            return resp_json
 
         }
         catch (err)
         {
+            console.log("handler/GetWord/err:", err)
+
             return Promise.reject(err)
         }
 
     } //GetWord
 
 }
+export {Owlbot}
