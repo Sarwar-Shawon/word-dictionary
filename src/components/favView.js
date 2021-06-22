@@ -104,12 +104,23 @@ class FavView extends PureComponent
                 </View>
                 <View style={{flex:1,marginTop: 25}}>
                     {
-                        fav_list.length ?
+                            fav_list.length ?
                             <FlatList
                                 data={fav_list}
                                 renderItem={this.RenderItem}
                                 keyExtractor={ ( item,index ) => index.toString() }
                             />
+                            :
+                            this.state.type && !fav_list.length
+                            ?
+                            <View style={[customStyle.boxView,{justifyContent: 'center', alignItems: 'center', marginTop: 40}]}>
+
+                                <MaterialCommunityIcons name="emoticon-sad-outline"  size={100} color={'#2d0648'}/>
+
+                                <Text style={{fontSize: 20, fontWeight: "bold"}}>
+                                    No match found.
+                                </Text>
+                            </View>
                             :
                             <View style={[customStyle.boxView,{justifyContent: 'center', alignItems: 'center', marginTop: 40}]}>
 
@@ -119,6 +130,7 @@ class FavView extends PureComponent
                                     You've not add any favourite words yet.
                                 </Text>
                             </View>
+
                     }
                 </View>
 
