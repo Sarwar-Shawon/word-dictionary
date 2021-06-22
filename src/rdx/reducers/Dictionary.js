@@ -10,7 +10,7 @@ export default( state = {
     switch( action.type )
     {
         case 'add:list:fav':
-            const _word = state.favList.find( x => x.word === action.payload.word )
+            const _word = state.favList.find( x => x.word.toLowerCase() === action.payload.word.toLowerCase() )
 
             if(!_word )
             {
@@ -19,7 +19,7 @@ export default( state = {
             return { ...state, ts: Date.now() }
 
         case 'upd:list:fav':
-            const idx = state.favList.findIndex( x => x.word === action.payload.word )
+            const idx = state.favList.findIndex( x => x.word.toLowerCase() === action.payload.word.toLowerCase() )
 
             if(idx !== -1)
             {

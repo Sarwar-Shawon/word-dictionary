@@ -48,5 +48,21 @@ export const customStyle = StyleSheet.create({
         shadowOffset:{  width: 1,  height: 1,  },
         shadowColor: '#ddd',
         shadowOpacity: 0.5
+    },
+    appText:{
+        fontSize:16,
+        textAlign:"center",
+        color:"#303030"
+    },
+    filterButton:{
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexDirection: 'row',
+        borderRadius: 5,
+        borderWidth: 1,
+        borderColor: "#000",
+        height: 30,
+        flex:1,
+        margin: 20
     }
 })
