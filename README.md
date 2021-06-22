@@ -23,7 +23,7 @@ In the `ios` directory
 
 ### APK
 
-To download the APK, click [here](https://github.com/react-native-material-design/demo-app/raw/master/app-release.apk)
+To download the APK, click [here]
 
 
 # App Screenshot
