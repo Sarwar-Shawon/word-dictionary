@@ -29,7 +29,7 @@ const listType = [
     {label: "verb", val: "verb"},
     {label: "adjective", val: "adjective"},
     {label: "adverb", val: "adverb"},
-    {label: "prepositions", val: "prepositions"},
+    {label: "preposition", val: "preposition"},
     {label: "abbreviation", val: "abbreviation"},
     {label: "suffix", val: "suffix"},
     {label: "prefix", val: "prefix"},

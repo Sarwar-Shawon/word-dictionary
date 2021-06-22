@@ -62,7 +62,7 @@ class SearchView extends PureComponent
                             placeholderTextColor="#b7b7b7"
                             placeholder="Search Dictionary"
                             value={this.state.search_word}
-                            onChangeText={(text) => this.setState({search_word: text})}
+                            onChangeText={(text) => this.setState({search_word: text.replace(/[^a-zA-Z]/g, "")})}
                         />
 
                     </View>
@@ -83,12 +83,15 @@ class SearchView extends PureComponent
 
                 </View>
                 {
-                    this.state.bInit &&
+                    this.state.bInit
+                    ?
                     <View style={{flex:1 , justifyContent: 'center', alignItems: 'center'}}>
                         <ActivityIndicator size="large"
                                            color="#843272"
                         />
                     </View>
+                    :
+                    null
                 }
 
 
