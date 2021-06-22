@@ -76,6 +76,10 @@ import com.android.build.OutputFile
  *   extraPackagerArgs: []
  * ]
  */
+project.ext.vectoricons = [
+        iconFontNames: [ 'MaterialIcons.ttf', 'FontAwesome5_Solid.ttf','FontAwesome5_Regular.ttf','FontAwesome5_Brands.ttf','FontAwesome.ttf','MaterialCommunityIcons.ttf','EvilIcons.ttf' ,'Ionicons.ttf'] // Name of the font files you want to copy
+]
+apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
 
 project.ext.react = [
     enableHermes: false,  // clean and rebuild if changing
@@ -136,6 +140,7 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
+        vectorDrawables.useSupportLibrary = true  // image crop picker
     }
     splits {
         abi {

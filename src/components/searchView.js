@@ -10,7 +10,7 @@ import {
     TouchableOpacity,
     TextInput,
     ActivityIndicator,
-    Alert
+    Alert,Platform
 
 } from 'react-native';
 
@@ -50,20 +50,22 @@ class SearchView extends PureComponent
             <View style={{flex:1}}>
                 <View style={{flexDirection: 'row', marginVertical: 15, margin: 20}}>
 
-                    <View style={{flexDirection: 'row', flex:2,marginRight: 10, height: 35,borderWidth: 1,
-                        borderColor: "#000"}}>
+                    <View style={{flexDirection: 'row', flex:2,marginRight: 10, height: 35,borderWidth: 1, borderColor: "#000"}}>
 
                         <View style={{justifyContent: 'center', paddingLeft: 5}}>
                             <MaterialIcons name="search"  size={18} color={ '#000'}/>
                         </View>
 
                         <TextInput
+
+                            style={{height: Platform.OS === 'android' ? 36 : 0}}
                             autoCorrect={false}
                             placeholderTextColor="#b7b7b7"
                             placeholder="Search Dictionary"
                             value={this.state.search_word}
-                            onChangeText={(text) => this.setState({search_word: text.replace(/[^a-zA-Z]/g, "")})}
+                            onChangeText={(text) => this.OnChange(text)}
                         />
+
 
                     </View>
 
@@ -178,6 +180,25 @@ class SearchView extends PureComponent
             this.setState({fav: findWord ? true: false})
 
             // console.log("findWord",findWord)
+        }
+        catch (err)
+        {
+
+            return {err}
+        }
+    }
+    /**
+     */
+    OnChange = (text)=>
+    {
+        try
+        {
+            console.log("text",text)
+
+            this.setState({search_word: text.replace(/[^a-zA-Z]/g, "")})
+            if(!text)
+                this.setState({find_word: ''})
+
         }
         catch (err)
         {

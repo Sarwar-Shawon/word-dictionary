@@ -10,7 +10,7 @@ import {
     TouchableOpacity,
     TextInput,
     Image,
-    FlatList
+    FlatList, Platform,
 
 } from 'react-native';
 
@@ -80,12 +80,12 @@ class WordView extends PureComponent
                     item.image_url &&
                     <Image
                         style={{
-                            width: 100,
-                            height: 100,
+                            width: 120,
+                            height: 120,
                             resizeMode: "contain",
                             marginLeft: "auto",
                             marginRight: "auto",
-                            borderRadius:50
+                            borderRadius: Platform.OS === 'android' ? 120 : 60
                         }}
                         source={{uri: item.image_url}}
                     />
