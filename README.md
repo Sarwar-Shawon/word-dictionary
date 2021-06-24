@@ -27,7 +27,7 @@ In the `ios` directory
 
 ### APK
 
-To download the APK, click [here]
+To download the APK, click [here](https://drive.google.com/file/d/1HNpZIh30odr058DzWGhWzshzOy9w9xwc/view?usp=sharing)
 
 
 # App Screenshot
