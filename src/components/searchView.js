@@ -58,8 +58,9 @@ class SearchView extends PureComponent
 
                         <TextInput
 
-                            style={Platform.OS === 'android' ? {height: 36} : {}}
+                            style={Platform.OS === 'android' ? {height: 36, color: '#333'} : {color: '#333'}}
                             autoCorrect={false}
+                            color="#333"
                             placeholderTextColor="#b7b7b7"
                             placeholder="Search Dictionary"
                             value={this.state.search_word}
